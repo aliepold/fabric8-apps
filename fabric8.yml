@@ -1,4 +1,5 @@
 ---
+pipeline: "workflows/maven/CanaryReleaseAndStage/Jenkinsfile"
 buildName: "fabric8-apps"
 links:
   Git: "https://github.com/aliepold/fabric8-apps.git"
