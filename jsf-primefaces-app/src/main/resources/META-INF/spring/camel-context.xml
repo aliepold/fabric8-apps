@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://camel.apache.org/schema/spring       http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+
+	<import resource="classpath:META-INF/spring/amq.xml" />
+
+	<bean id="localhost" class="java.net.InetAddress" factory-method="getLocalHost" />
+	<bean id="serverName" class="java.lang.String">
+		<constructor-arg value="#{''+localhost.hostName}" />
+	</bean>
+
+	<bean id="quartz" class="org.apache.camel.component.quartz.QuartzComponent"
+		scope="singleton">
+		<property name="startDelayedSeconds" value="10" />
+	</bean>
+
+
+	<camelContext id="jsfCamelContext" xmlns="http://camel.apache.org/schema/spring">
+
+		<endpoint id="ping" uri="activemq:queue:jsf-app-#{serverName}"
+			pattern="InOnly" />
+
+		<!-- Route, um das aus der Jsf-Bean ankommende Camel-Exchange-Object weiter 
+			zu leiten. -->
+		<route id="submit-item">
+			<from uri="direct:submitItem" />
+			<log message="Route from Jsf-Bean called..." />
+			<to uri="activemq:queue:incomingJsfRequest" />
+		</route>
+
+		<route id="pingRoute">
+			<from uri="quartz://pingTimer?cron=0/30+*+*-*+?+*+*" />
+<setBody>
+  <simple>${''+localhost.hostName}</simple>
+</setBody>
+			<log message="Ping Self via: [body=${body}]" />
+			<to uri="ping" />
+		</route>
+		<route id="pongRoute">
+			<from uri="ping" />
+			<log message="Pong: [body=${body}]" />
+			<to uri="mock:end" />
+		</route>
+
+
+	</camelContext>
+
+</beans>

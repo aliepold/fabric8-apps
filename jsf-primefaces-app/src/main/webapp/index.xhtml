@@ -1,0 +1,31 @@
+<f:view xmlns="http://www.w3c.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:ng="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:prime="http://primefaces.org/ui">
+	<h:head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<title>#{menuController.title}</title>
+		<style>
+body {
+	font-size: 12px;
+}
+</style>
+	</h:head>
+	<h:body>
+		<h:form>
+			<prime:panel header="Um was geht es in diesem Micro-Service?">
+				<div style="height: 50px">Das ist eine einfache Jsf-Anwendung
+					mit PrimeFaces und Spring Boot.</div>
+			</prime:panel>
+			<prime:panel header="JSF 2.2 Bean Access #{jsfExampleBean.podIp}" menuTitle="">
+				#{jsfExampleBean.itWorks}
+				</prime:panel>
+			<prime:panel header="JSF 2.2 Bean Access">
+				<h:commandButton value="Let's go on!" action="example"></h:commandButton>
+			</prime:panel>
+		</h:form>
+	</h:body>
+</f:view>
