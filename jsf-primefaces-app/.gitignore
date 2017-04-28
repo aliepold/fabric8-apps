@@ -10,6 +10,7 @@ overlays
 *.swp
 *.log
 .project
+.springBeans
 .classpath
 *.fmd
 .cache
