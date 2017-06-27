@@ -26,7 +26,7 @@ public class CamundaSpringBootExampleApplicationTest {
 	@Test  
 	public void verifyProcessInstanceStarted() {
 	  // process instance is started by the application and wait on the user task
-	  Task task = taskService.createTaskQuery().taskName("Approve Loan").singleResult();
+	  Task task = taskService.createTaskQuery().taskName("Simple User Task").singleResult();
 	  assertThat(task, is(notNullValue()));
 
 	  // complete the user task and verify that the process ends
