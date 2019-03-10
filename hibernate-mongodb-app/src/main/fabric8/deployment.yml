@@ -1,0 +1,27 @@
+spec:
+  template:
+    spec:
+      containers:
+        - 
+          resources:
+            requests:
+              cpu: "0.1"
+              memory: 64Mi
+            limits:
+              cpu: "0.2"
+              memory: 100Mi
+        - env:
+          - name: KUBERNETES_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+          envFrom:
+            - configMapRef:
+                name: mongodb-config
+          image: mongodb:3.4.19
+          imagePullPolicy: IfNotPresent
+          name: mongodb
+          ports:
+          - containerPort: 27017
+            name: http
+            protocol: TCP

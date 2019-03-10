@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    fabric8.io/git-commit: 6ac9d07e5898437861ae966186252d0d512907c0
+    fabric8.io/iconUrl: img/icons/spring-boot.svg
+    fabric8.io/git-branch: master
+  labels:
+    expose: "true"
+    app: hibernate-mongodb-app
+    version: 1.0.0-SNAPSHOT
+    group: de.aliepold.fabric8.jpa.mongodb
+  name: hibernate-mongodb-app
+spec:
+  ports:
+  - name: http
+    port: 27017
+    protocol: TCP
+    targetPort: 27017
+  selector:
+    app: hibernate-mongodb-app
+    group: de.aliepold.fabric8.jpa.mongodb
