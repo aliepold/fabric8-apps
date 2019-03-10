@@ -1,7 +1,6 @@
 package de.aliepold.fabric8.jpa.mongodb;
 
 import static java.util.Arrays.asList;
-import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -21,12 +20,6 @@ import org.yaml.snakeyaml.Yaml;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = de.aliepold.fabric8.jpa.mongodb.JpaMongoDbApplication.class)
 public class JpaMongoDbApplicationTest {
-
-	@Test
-	public void testOk() {
-
-		assertTrue(true);
-	}
 
 	@SuppressWarnings("unchecked")
 	@Test
@@ -124,52 +117,6 @@ public class JpaMongoDbApplicationTest {
 							triggers.remove(t);
 						}
 						yaml.dump(obj, new FileWriter(deploymentFile));
-					}
-				}
-			}
-			System.out.println(obj);
-		}
-	}
-
-	public void editYaml2() throws Exception {
-
-		File deploymentFile = new File("target/classes/META-INF/fabric8/openshift.yml");
-
-		if (deploymentFile.exists()) {
-			Map<String, Object> triggerToRemove = null;
-
-			DumperOptions options = new DumperOptions();
-			options.setIndent(2);
-			options.setPrettyFlow(true);
-			options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
-
-			Yaml yaml = new Yaml(options);
-
-			FileInputStream inputStream = new FileInputStream(deploymentFile);
-
-			Map<String, Object> obj = (Map<String, Object>) yaml.load(inputStream);
-			List<Object> items = (List<Object>) obj.get("items");
-
-			for (Object item : items) {
-				Map<String, Object> i = (Map<String, Object>) item;
-				for (Map.Entry<String, Object> entryKind : i.entrySet()) {
-					if (entryKind.getKey().equals("kind") && entryKind.getValue().equals("DeploymentConfig")) {
-						Map<String, Object> spec = (Map<String, Object>) i.get("spec");
-						List<Object> triggers = (List<Object>) spec.get("triggers");
-						for (Object trigger : triggers) {
-							Map<String, Object> t = (Map<String, Object>) trigger;
-							if (t.containsKey("imageChangeParams")) {
-								Map<String, Object> ip = (Map<String, Object>) t.get("imageChangeParams");
-								List<String> c = (List<String>) ip.get("containerNames");
-								if (c.contains("couchdb")) {
-									triggerToRemove = t;
-								}
-							}
-						}
-						if (null != triggerToRemove) {
-							triggers.remove(triggerToRemove);
-							yaml.dump(obj, new FileWriter(deploymentFile));
-						}
 					}
 				}
 			}
